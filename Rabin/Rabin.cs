@@ -58,6 +58,7 @@ namespace RabinLib
 
             return result;
         }
+
         /// <summary>
         /// Расшифровка большого текста
         /// </summary>
@@ -258,6 +259,7 @@ namespace RabinLib
         #endregion
 
         #region Methods for Big text Rabin Signature System
+
         /// <summary>
         /// Метод для подписи большо теста
         /// </summary>
@@ -297,6 +299,7 @@ namespace RabinLib
             return res;
 
         }
+
         /// <summary>
         /// Метод для проверки большого количества подписей
         /// </summary>
@@ -324,7 +327,7 @@ namespace RabinLib
             }
             TrueSign = TrueSignatures.ToArray();
             return Encoding.UTF8.GetString(resToDecode.ToArray());
-          
+
 
         }
 
@@ -409,6 +412,7 @@ namespace RabinLib
         {
             return DecryptionWithVertif(OpenKey, s.S, s.I, out TrueSignature);
         }
+
         /// <summary>
         /// Проверка подписи с извлечением сообщения
         /// </summary>
@@ -455,6 +459,7 @@ namespace RabinLib
                 return false;
             }
         }
+
         /// <summary>
         /// Вычисление сдвига и подписи
         /// </summary>
@@ -499,6 +504,87 @@ namespace RabinLib
 
         #endregion
 
+        #region Methods for Big text Rabin Signature System
+
+        /// <summary>
+        /// Считает размер блока байтов для данного ключа
+        /// </summary>
+        /// <param name="OpenKey"></param>
+        /// <returns></returns>
+        public static int ModifSignByteSize(BigInteger OpenKey)
+        {
+            BigInteger x = 256;
+
+            int bytecount = 1;
+
+            while ((OpenKey - 6) / 16 >= x)
+            {
+                x *= 256;
+                bytecount++;
+            }
+            bytecount--;
+
+            if (bytecount <= 1)
+                throw new Exception("слишком маленький открытый ключ");
+
+            return bytecount;
+        }
+
+        public static BigInteger[] ModifCalcSignatureBigText(string text, BigInteger OpKey, BigInteger SecretKey)
+        {
+            byte[] textUTF8 = Encoding.UTF8.GetBytes(text);
+
+            int size = ModifSignByteSize(OpKey);
+
+            int cycleCount = (textUTF8.Length / size) + (textUTF8.Length % size == 0 ? 0 : 1);
+            bool falgOK = cycleCount == (textUTF8.Length / size);
+
+            BigInteger[] res = new BigInteger[cycleCount];
+
+            int iteratoR = 0;
+
+            for (int i = 0; i < cycleCount; i++)
+            {
+                int siZE = i == cycleCount - 1 ? falgOK ? size : (textUTF8.Length % size) : size;
+
+                List<byte> block = new List<byte>();
+
+                for (int j = 0; j < siZE; j++)
+                    block.Add(textUTF8[iteratoR++]);
+
+
+                res[i] = ModifCalcSignatyre(block.ToArray(), OpKey, SecretKey);
+            }
+
+            return res;
+        }
+
+        public static string DecryptModifSignBigText(BigInteger[] input, BigInteger Openkey, out bool[] res)
+        {
+
+            List<byte> resToDecode = new List<byte>();
+            List<bool> TrueSignatures = new List<bool>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+
+                bool trueSign;
+
+                byte[] inh = DecryptModifSignByteArr(input[i], Openkey, out trueSign);
+
+                TrueSignatures.Add(trueSign);
+                foreach (byte b in inh)
+                {
+                    resToDecode.Add(b);
+                }
+
+            }
+            res = TrueSignatures.ToArray();
+            return Encoding.UTF8.GetString(resToDecode.ToArray());
+        }
+
+        #endregion
+
         #region Rabin Modif Signatyre
         //Модифицированная цифровая подпись Рабина с извелением сообщения
 
@@ -515,6 +601,40 @@ namespace RabinLib
             else
                 throw new Exception("Ошибка в Вычислении ключей");
 
+        }
+
+        /// <summary>
+        /// Вычисление подписи
+        /// </summary>
+        /// <param name="st">Подписываемый массив байт</param>
+        /// <param name="OpenKey">Открытый ключ</param>
+        /// <param name="SecretKey">Закрытый ключ</param>
+        /// <returns>Подпись S</returns>
+        public static BigInteger ModifCalcSignatyre(byte[] st, BigInteger OpenKey, BigInteger SecretKey)
+        {
+            //step 1 page 160
+            BigInteger T = ConvToBigIntWithBit(st);
+
+            if (T > ((OpenKey - 6) / 16))
+                throw new Exception("не удалось вычислить подпись так как m=>(n-6)/16");
+            //step 2
+            BigInteger w = 16 * T + 6;
+            //step 3
+            BigInteger Jack = Jacobi(w, OpenKey);
+
+            //step 4
+            BigInteger S;
+
+            if (Jack == 1)
+                S = BigInteger.ModPow(w, SecretKey, OpenKey);
+
+            else if (Jack == -1)
+                S = BigInteger.ModPow((w / 2), SecretKey, OpenKey);
+
+            else
+                throw new Exception("Требуется факторизация числа n");
+
+            return S;
         }
 
         /// <summary>
@@ -558,7 +678,7 @@ namespace RabinLib
         /// <param name="OpenKey">Открытый ключ</param>
         /// <param name="res">Подтвержедние подписи</param>
         /// <returns>Извлеченное сообщение</returns>
-        public static string DecryptSign(BigInteger S, BigInteger OpenKey, out bool res)
+        public static string DecryptModifSign(BigInteger S, BigInteger OpenKey, out bool res)
         {
             BigInteger u = BigInteger.ModPow(S, 2, OpenKey), U = BigInteger.ModPow(u, 1, 8);
 
@@ -590,12 +710,53 @@ namespace RabinLib
 
             res = Vetif(w);
 
-            if (res == false)
-                throw new Exception("Подпись не принята");
-
             BigInteger m = (w - 6) / 16;
 
             return ConvToStringWithBit(m);
+        }
+
+        /// <summary>
+        /// Расшифровка и извелечение сообщения 
+        /// </summary>
+        /// <param name="S">Подпись</param>
+        /// <param name="OpenKey">Открытый ключ</param>
+        /// <param name="res">Подтвержедние подписи</param>
+        /// <returns>байтовое представление извлеченного текста</returns>
+        public static byte[] DecryptModifSignByteArr(BigInteger S, BigInteger OpenKey, out bool res)
+        {
+            BigInteger u = BigInteger.ModPow(S, 2, OpenKey), U = BigInteger.ModPow(u, 1, 8);
+
+
+            BigInteger w;
+
+            if (U == 6)
+                w = u;
+
+            else if (U == 3)
+                w = 2 * u;
+
+            else if (U == 7)
+                w = OpenKey - u;
+
+            else if (U == 2)
+                w = 2 * (OpenKey - u);
+
+            else
+                throw new Exception("Ошибка в проверке подписи");
+
+
+            SignatyreVert Vetif = delegate (BigInteger si)
+            {
+                if ((si - 6) % 16 == 0)
+                    return true;
+                else return false;
+            };
+
+            res = Vetif(w);
+
+            BigInteger m = (w - 6) / 16;
+
+            return ConvToBitFromBigInteger(m);
         }
 
         #endregion
@@ -609,24 +770,22 @@ namespace RabinLib
         /// <returns>число</returns>
         static BigInteger ConvToBigIntWithBit(string Text)
         {
-
-
             byte[] data = Encoding.UTF8.GetBytes(Text);
-
 
             return ConvToBigIntWithBit(data);
         }
 
+        /// <summary>
+        /// Преобразует массив байт в число
+        /// </summary>
+        /// <param name="data">массив байт</param>
+        /// <returns>число</returns>
         static BigInteger ConvToBigIntWithBit(byte[] data)
         {
-
             BigInteger res = 0;
 
             for (int i = 0; i < data.Length; i++)
                 res += data[i] * (BigInteger)Math.Pow(2, 8 * i);
-
-
-
             return res;
         }
 
@@ -1059,35 +1218,68 @@ namespace RabinLib
             return result;
         }
 
-        public static string GeneRateKey(int symbCount)
+        /// <summary>
+        /// Генерирует вероятното простое число
+        /// </summary>
+        /// <param name="symbCount">необходимая диланна</param>
+        /// <returns>строковое представление простого числа</returns>
+        public static BigInteger GeneRateKey(int symbCount)
         {
             bool rx = false;
 
 
             string rs = "";
+            BigInteger rnd;
             do
             {
                 rs = "";
                 for (int i = 0; i < symbCount; i++)
-                {
                     rs += "9";
-                }
+
                 BigInteger k99 = BigInteger.Parse(rs);
-                BigInteger rnd = Rabin.Rand(k99);
+
+                rnd = Rabin.Rand(k99);
+
                 rx = Rabin.Miller_Rabin_Test(rnd);
+
                 if (rx)
-                {
-                    rs = rnd + "";
-                    break;
-                }
+                    return rnd;
+
+
             } while (true);
 
-            return rs;
+
         }
 
+        /// <summary>
+        /// Генерирует два простых числа заданной длинны
+        /// </summary>
+        /// <param name="symb1">длинна первого простого числа</param>
+        /// <param name="symb2">длинна второго простого числа</param>
+        /// <returns>строковое представление двух простых чисел</returns>
         public static string gen2Keys(int symb1, int symb2)
         {
             return GeneRateKey(symb1) + " " + GeneRateKey(symb2);
+        }
+
+        public static string gen2Keys3and7mod8(int symb3, int symb7, out string Opkey)
+        {
+            BigInteger FrstKey;
+            while (true)
+            {
+                FrstKey = GeneRateKey(symb3);
+                if (FrstKey % 8 == 3)
+                    break;
+            }
+            BigInteger SecondKey;
+            while (true)
+            {
+                SecondKey = GeneRateKey(symb7);
+                if ( SecondKey % 8 == 7)
+                    break;
+            }
+            Opkey = SecondKey * FrstKey + "";
+            return (SecondKey * FrstKey - SecondKey - FrstKey + 5) / 8 + "";
         }
 
         #endregion
