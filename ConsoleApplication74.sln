@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabinLib", "Rabin\RabinLib.csproj", "{D6CB7FAE-0FC1-4D20-AF14-8679EA5BE01E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testsomelibs", "Testsomelibs\Testsomelibs.csproj", "{1A348ADC-DA3D-4344-A86B-98913BF682E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rabin Window", "Rabin Window\Rabin Window.csproj", "{074547F0-0349-4920-BCB6-BB76869634DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rabin Window.BL", "Rabin Window.BL\Rabin Window.BL.csproj", "{E33469D8-177A-4692-BBF6-D8FC5E51BD3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartMenu", "StartMenu\StartMenu.csproj", "{F9D0D93F-8E22-4F53-98DD-069FE4792A91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenkeyWindow", "OpenkeyWindow\OpenkeyWindow.csproj", "{960BDACF-FCF7-4115-94D2-8D6F16990A33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateKeyWindow", "GenerateKeyWindow\GenerateKeyWindow.csproj", "{C8556F90-9BFF-4373-BEAF-CC9BD549105E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6CB7FAE-0FC1-4D20-AF14-8679EA5BE01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CB7FAE-0FC1-4D20-AF14-8679EA5BE01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CB7FAE-0FC1-4D20-AF14-8679EA5BE01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CB7FAE-0FC1-4D20-AF14-8679EA5BE01E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A348ADC-DA3D-4344-A86B-98913BF682E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A348ADC-DA3D-4344-A86B-98913BF682E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A348ADC-DA3D-4344-A86B-98913BF682E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A348ADC-DA3D-4344-A86B-98913BF682E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{074547F0-0349-4920-BCB6-BB76869634DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{074547F0-0349-4920-BCB6-BB76869634DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{074547F0-0349-4920-BCB6-BB76869634DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{074547F0-0349-4920-BCB6-BB76869634DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33469D8-177A-4692-BBF6-D8FC5E51BD3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33469D8-177A-4692-BBF6-D8FC5E51BD3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33469D8-177A-4692-BBF6-D8FC5E51BD3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33469D8-177A-4692-BBF6-D8FC5E51BD3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D0D93F-8E22-4F53-98DD-069FE4792A91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D0D93F-8E22-4F53-98DD-069FE4792A91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D0D93F-8E22-4F53-98DD-069FE4792A91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D0D93F-8E22-4F53-98DD-069FE4792A91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960BDACF-FCF7-4115-94D2-8D6F16990A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960BDACF-FCF7-4115-94D2-8D6F16990A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960BDACF-FCF7-4115-94D2-8D6F16990A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960BDACF-FCF7-4115-94D2-8D6F16990A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8556F90-9BFF-4373-BEAF-CC9BD549105E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8556F90-9BFF-4373-BEAF-CC9BD549105E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8556F90-9BFF-4373-BEAF-CC9BD549105E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8556F90-9BFF-4373-BEAF-CC9BD549105E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
