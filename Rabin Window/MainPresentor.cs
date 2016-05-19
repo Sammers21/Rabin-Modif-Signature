@@ -86,9 +86,11 @@ namespace Rabin_Window
         {
             try
             {
-                string[] readkeys = _manager.GetContent(_imainForm.SecretkeyPath).Split(' ');
-                _imainForm.SecretKeyOne = BigInteger.Parse(readkeys[0]);
-                _imainForm.SecretKeyTwo = BigInteger.Parse(readkeys[1]);
+                string readSecKey = _manager.GetContent(_imainForm.SecretkeyPath);
+                string readopKey = _manager.GetContent(_imainForm.OpenKeyPath);
+
+                _imainForm.SecretKey = BigInteger.Parse(readSecKey);
+                _imainForm.OpenKey = BigInteger.Parse(readopKey);
                 _messageService.ShowMessage("Ключ успешно загружен");
             }
             catch
@@ -100,9 +102,12 @@ namespace Rabin_Window
 
         private void _iGenerate_PressOk(object sender, EventArgs e)
         {
-            string keys2 = RabinLib.Rabin.gen2Keys(int.Parse(_iGenerate.Key1), int.Parse(_iGenerate.Key2));
+            string OpKey;
+
+            string keys2 = RabinLib.Rabin.gen2Keys3and7mod8(int.Parse(_iGenerate.Key1), int.Parse(_iGenerate.Key2),out OpKey);
+
             _manager.SaveContent(keys2, _iGenerate.pathSecretkey);
-            string OpKey = (BigInteger.Parse(keys2.Split(' ')[0]) * BigInteger.Parse(keys2.Split(' ')[1])) + "";
+         
             _manager.SaveContent(OpKey, _iGenerate.pathOpenKey);
             _iGenerate.SkipFrom();
             _imenuForm.ShowForm();
@@ -154,8 +159,7 @@ namespace Rabin_Window
 
             _currentFilePath = _imainForm.FilePath;
 
-
-            _manager.SaveContent(content, _currentFilePath, _imainForm.SecretKeyOne, _imainForm.SecretKeyTwo);
+            _manager.SaveContent(content, _currentFilePath, _imainForm.OpenKey, _imainForm.SecretKey);
 
             _messageService.ShowMessage("Файл успешно сохранён");
         }
@@ -194,7 +198,7 @@ namespace Rabin_Window
 
 
                 bool[] Signs;
-                string Content = _manager.GetContent(_currentFilePath, _imainForm.SecretKeyOne * _imainForm.SecretKeyTwo, out Signs);
+                string Content = _manager.GetContent(_currentFilePath, _imainForm.OpenKey, out Signs);
 
                 int count = _manager.GetSymbloCount(Content);
 
@@ -222,7 +226,7 @@ namespace Rabin_Window
             {
                 string content = _imainForm.Content;
 
-                _manager.SaveContent(content, _currentFilePath, _imainForm.SecretKeyOne, _imainForm.SecretKeyTwo);
+                _manager.SaveContent(content, _currentFilePath, _imainForm.OpenKey, _imainForm.SecretKey);
 
                 _messageService.ShowMessage("Файл успешно сохранён");
             }
