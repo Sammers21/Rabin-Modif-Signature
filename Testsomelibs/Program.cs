@@ -88,8 +88,8 @@ namespace RabinTestConsole
 
                                 Console.WriteLine(dec);
                                 Console.WriteLine("\n");
-                                
-                                foreach(Boolean b in truestor)
+
+                                foreach (Boolean b in truestor)
                                     Console.WriteLine(b);
                             }
                             catch (Exception e)
@@ -112,13 +112,20 @@ namespace RabinTestConsole
 
                                 Console.WriteLine("Отрытый ключ n={0}  Secret key={1}", n, SEcret);
 
-                                BigInteger Sign = Rabin.ModifCalcSignatyre(Text, n, SEcret);
-                                Console.WriteLine("Подпись S= " + Sign);
+                                BigInteger[] Signatures = Rabin.ModifCalcSignatureBigText(Text, n, SEcret);
 
-                                bool ans;
-                                string result = Rabin.DecryptSign(Sign, n, out ans);
+                                Console.WriteLine("\n");
+
+                                foreach (BigInteger Sign in Signatures)
+                                    Console.WriteLine("Подпись S= " + Sign);
+
+                                Console.WriteLine("\n");
+
+                                bool[] ANS;
+                                string result = Rabin.DecryptModifSignBigText(Signatures, n, out ANS);
                                 Console.WriteLine("Результат расшифровки " + result);
-                                Console.WriteLine("Подпись имеет значе " + ans);
+                                foreach (bool ans in ANS)
+                                    Console.WriteLine("Подпись имеет значе " + ans);
 
                                 Console.ReadLine();
                             }
