@@ -34,8 +34,8 @@ namespace Rabin_Window
             _imainForm.SetSymbolCount(0);
             _imainForm.SetByteCount(0);
 
-              _imainForm.FileSaveClick += ImainForm_FileSaveClick;
-             _imainForm.FileOpenClick += ImainForm_FileOpenClick;
+            _imainForm.FileSaveClick += ImainForm_FileSaveClick;
+            _imainForm.FileOpenClick += ImainForm_FileOpenClick;
             _imainForm.GoToMenuClick += ImainForm_GoToMenuClick;
             _imainForm.ContentChanged += ImainForm_ContentChanged;
             _imainForm.FileSaveAsClick += _imainForm_FileSaveAsClick;
@@ -104,10 +104,10 @@ namespace Rabin_Window
         {
             string OpKey;
 
-            string keys2 = RabinLib.Rabin.gen2Keys3and7mod8(int.Parse(_iGenerate.Key1), int.Parse(_iGenerate.Key2),out OpKey);
+            string keys2 = RabinLib.Rabin.gen2Keys3and7mod8(int.Parse(_iGenerate.Key1), int.Parse(_iGenerate.Key2), out OpKey);
 
             _manager.SaveContent(keys2, _iGenerate.pathSecretkey);
-         
+
             _manager.SaveContent(OpKey, _iGenerate.pathOpenKey);
             _iGenerate.SkipFrom();
             _imenuForm.ShowForm();
@@ -122,17 +122,24 @@ namespace Rabin_Window
         private void _iopenkeyForm_FileSaveAsClick(object sender, EventArgs e)
         {
 
+            try
+            {
+                _currentFilePath = _iopenkeyForm.path;
 
-            _currentFilePath = _iopenkeyForm.path;
-
-            bool[] outputSign;
+                bool[] outputSign;
 
 
-            string res = _manager.GetContent(_currentFilePath, _iopenkeyForm.OpenKey, out outputSign);
+                string res = _manager.GetContent(_currentFilePath, _iopenkeyForm.OpenKey, out outputSign);
 
-            _iopenkeyForm.Content = res;
+                _iopenkeyForm.Content = res;
 
-            _messageService.ShowMessage(String.Format("В открытом файле приняты {0}/{1} подписей", outputSign.Where(p => p == true).ToArray().Length, outputSign.Length));
+                _messageService.ShowMessage(String.Format("В открытом файле приняты {0}/{1} подписей", outputSign.Where(p => p == true).ToArray().Length, outputSign.Length));
+            }
+            catch (Exception ex)
+
+            {
+                _messageService.ShowError("Возможно вы используете не верный открытый ключ. " + ex.Message);
+            }
         }
 
         private void _iopenkeyForm_GoToMenuClick(object sender, EventArgs e)
@@ -211,7 +218,7 @@ namespace Rabin_Window
             catch (Exception ex)
             {
 
-                _messageService.ShowError(ex.Message);
+                _messageService.ShowError("Возможно вы используете не верный открытый ключ. " + ex.Message);
             }
             finally
             {

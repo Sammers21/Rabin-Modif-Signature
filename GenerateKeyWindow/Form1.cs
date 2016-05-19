@@ -76,7 +76,7 @@ namespace GenerateKeyWindow
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            saveFileDialog.Filter = "Cекретный ключ|*.secretkey";
+            saveFileDialog.Filter = "Cекретный ключ модифицированной подписи|*.modifsignaturesecretkey";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -84,7 +84,7 @@ namespace GenerateKeyWindow
             }
             SaveFileDialog saveFileDialog2 = new SaveFileDialog();
 
-            saveFileDialog2.Filter = "Открытый ключ|*.openkey";
+            saveFileDialog2.Filter = "Открытый ключ модифицированной подписи|*.modifsignatureopenkey";
 
             if (saveFileDialog2.ShowDialog() == DialogResult.OK)
             {

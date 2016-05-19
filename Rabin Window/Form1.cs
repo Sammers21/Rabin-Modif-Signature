@@ -15,9 +15,10 @@ namespace Rabin_Window
     {
         string FilePath { get; }
         string SecretkeyPath { get; set; }
+        string OpenKeyPath { get; set; }
         string Content { get; set; }
-        BigInteger SecretKeyOne { get; set; }
-        BigInteger SecretKeyTwo { get; set; }
+        BigInteger SecretKey { get; set; }
+        BigInteger OpenKey { get; set; }
 
         void SetSymbolCount(int count);
         void SetByteCount(int count);
@@ -61,7 +62,7 @@ namespace Rabin_Window
         }
         public string SecretkeyPath { get; set; }
 
-        public BigInteger SecretKeyOne
+        public BigInteger SecretKey
         {
             get
             {
@@ -74,7 +75,7 @@ namespace Rabin_Window
             }
         }
 
-        public BigInteger SecretKeyTwo
+        public BigInteger OpenKey
         {
             get
             {
@@ -86,6 +87,7 @@ namespace Rabin_Window
                 tbtSecretKey2.Text = value + "";
             }
         }
+        public string OpenKeyPath { get; set; }
 
         public event EventHandler ContentChanged;
         public event EventHandler FileOpenClick;
@@ -129,7 +131,7 @@ namespace Rabin_Window
         private void btnChoose_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Подпись Рабина|*.rabinsignature";
+            openFileDialog.Filter = "Подпись Рабина|*.rabinmodifsignature";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -171,14 +173,14 @@ namespace Rabin_Window
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            lblKeyByteCount.Text = RabinLib.Rabin.CalcylateByteSize(SecretKeyOne * SecretKeyTwo) + "";
+            lblKeyByteCount.Text = RabinLib.Rabin.ModifSignByteSize(OpenKey) + "";
 
             this.FormClosed += (object Sender, FormClosedEventArgs ex) =>
             {
                 if (CloseForm != null)
                     CloseForm(this, EventArgs.Empty);
             };
-            BigInteger p = SecretKeyOne, q = SecretKeyTwo, f, h;
+            BigInteger SecKey = SecretKey, Opkey = OpenKey, f, h;
 
 
             tbtSecretKey1.TextChanged += (object Sender, EventArgs E) =>
@@ -189,19 +191,15 @@ namespace Rabin_Window
                     bool flag = BigInteger.TryParse(tbtSecretKey1.Text, out f);
                     if (!flag)
                     {
-                        tbtSecretKey1.Text = p + "";
+                        tbtSecretKey1.Text = SecKey + "";
                         throw new Exception("Ключ должен состоять из цифр");
                     }
-                    else if (!RabinLib.Rabin.Miller_Rabin_Test(f))
-                    {
-                        tbtSecretKey1.Text = p + "";
-                        throw new Exception("Ключ должен быть простым");
-                    }
+
                     else
                     {
-                        p = SecretKeyOne;
+                        SecKey = SecretKey;
                     }
-               
+
                 }
                 catch (Exception ex)
                 {
@@ -209,7 +207,7 @@ namespace Rabin_Window
                 }
                 finally
                 {
-                    lblKeyByteCount.Text = RabinLib.Rabin.CalcylateByteSize(p * q) + "";
+                    lblKeyByteCount.Text = RabinLib.Rabin.ModifSignByteSize(OpenKey) + "";
                 }
             };
             tbtSecretKey2.TextChanged += (object Sender, EventArgs E) =>
@@ -220,17 +218,12 @@ namespace Rabin_Window
                     bool flag = BigInteger.TryParse(tbtSecretKey2.Text, out h);
                     if (!flag)
                     {
-                        tbtSecretKey2.Text = q + "";
+                        tbtSecretKey2.Text = Opkey + "";
                         throw new Exception("Ключ должен состоять из цифр");
-                    }
-                    else if (!RabinLib.Rabin.Miller_Rabin_Test(h))
-                    {
-                        tbtSecretKey2.Text = q + "";
-                        throw new Exception("Ключ должен быть простым");
                     }
                     else
                     {
-                        q = SecretKeyTwo;
+                        Opkey = OpenKey;
                     }
 
                 }
@@ -240,7 +233,7 @@ namespace Rabin_Window
                 }
                 finally
                 {
-                    lblKeyByteCount.Text = RabinLib.Rabin.CalcylateByteSize(p * q) + "";
+                    lblKeyByteCount.Text = RabinLib.Rabin.ModifSignByteSize(OpenKey) + "";
                 }
             };
         }
@@ -249,7 +242,7 @@ namespace Rabin_Window
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            saveFileDialog.Filter = "Подпись Рабина|*.rabinsignature";
+            saveFileDialog.Filter = "Подпись Рабина|*.rabinmodifsignature";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -297,11 +290,21 @@ namespace Rabin_Window
         private void btnLoadKeyFromFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Секретный ключ|*.secretkey";
+            openFileDialog.Filter = "Cекретный ключ модифицированной подписи|*.modifsignaturesecretkey";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 SecretkeyPath = openFileDialog.FileName;
+
+
+            }
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            openFileDialog1.Filter = "Открытый ключ модифицированной подписи|*.modifsignatureopenkey";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                OpenKeyPath = openFileDialog1.FileName;
 
 
                 if (SecretKeyClick != null)

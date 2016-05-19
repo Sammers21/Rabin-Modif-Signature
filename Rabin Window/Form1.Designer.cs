@@ -58,7 +58,8 @@
             this.tbtSecretKey1.Name = "tbtSecretKey1";
             this.tbtSecretKey1.Size = new System.Drawing.Size(363, 20);
             this.tbtSecretKey1.TabIndex = 0;
-            this.tbtSecretKey1.Text = "\n67139473157512273617293294729232263747915868329239\n";
+            this.tbtSecretKey1.Text = "\n42764507373891426737894787167122204810987143475912511814131712839262784842723802" +
+    "2492911827679032622";
             // 
             // tbtSecretKey2
             // 
@@ -68,7 +69,8 @@
             this.tbtSecretKey2.Name = "tbtSecretKey2";
             this.tbtSecretKey2.Size = new System.Drawing.Size(398, 20);
             this.tbtSecretKey2.TabIndex = 2;
-            this.tbtSecretKey2.Text = "\n\n14837455474356933483426383787384866415758746169291\n";
+            this.tbtSecretKey2.Text = "342116058991131413903158297336977638487897147807312035781981305767497979062906827" +
+    "2599455932103088821";
             // 
             // tbtContent
             // 
@@ -88,9 +90,9 @@
             this.lblSecretKey1.AutoSize = true;
             this.lblSecretKey1.Location = new System.Drawing.Point(320, 28);
             this.lblSecretKey1.Name = "lblSecretKey1";
-            this.lblSecretKey1.Size = new System.Drawing.Size(96, 13);
+            this.lblSecretKey1.Size = new System.Drawing.Size(91, 13);
             this.lblSecretKey1.TabIndex = 4;
-            this.lblSecretKey1.Text = "Закрытый ключ 1";
+            this.lblSecretKey1.Text = "Секретный ключ";
             // 
             // label2
             // 
@@ -99,9 +101,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(686, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 13);
+            this.label2.Size = new System.Drawing.Size(87, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Закрытый ключ 2";
+            this.label2.Text = "Открытый ключ";
             // 
             // butSave
             // 

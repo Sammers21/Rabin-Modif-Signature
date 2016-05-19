@@ -100,6 +100,7 @@ namespace OpenkeyWindow
         public event EventHandler Close;
 
         #endregion
+
         public OpenKeyForm()
         {
 
@@ -118,6 +119,7 @@ namespace OpenkeyWindow
                 lblSymbolCount.Text = Content.Length + "";
                 lblByte.Text = Encoding.UTF8.GetBytes(Content).Length + " ";
             };
+
             tbtOpenKey.TextChanged += (object sender, EventArgs e) =>
             {
 
@@ -132,7 +134,7 @@ namespace OpenkeyWindow
                     else
                         n = OpenKey;
 
-                    lblKeyByteCount.Text = Rabin.CalcylateByteSize(OpenKey) + "";
+                    lblKeyByteCount.Text = Rabin.ModifSignByteSize(OpenKey) + "";
                 }
                 catch (Exception ex)
                 {
@@ -156,7 +158,7 @@ namespace OpenkeyWindow
         private void butSave_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Подпись Рабина|*.rabinsignature";
+            openFileDialog.Filter = "Модифицированная подпись Рабина|*.rabinmodifsignature";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -178,7 +180,7 @@ namespace OpenkeyWindow
         private void btnLoadOpneKeyFromFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Открытый ключ|*.openkey";
+            openFileDialog.Filter = "Открытый ключ|*.modifsignatureopenkey";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
