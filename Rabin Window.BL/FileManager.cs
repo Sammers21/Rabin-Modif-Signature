@@ -38,28 +38,24 @@ namespace Rabin_Window.BL
 
         public string GetContent(string path, Encoding encoding, BigInteger OpenKey, out bool[] Signs)
         {
-            Signature[] conten = File.ReadAllLines(path, encoding).Select(p =>
-            {
-                BigInteger[] te = p.Split(' ').Select(F => BigInteger.Parse(F)).ToArray();
-                return new Signature(te[0], te[1]);
-            }).ToArray();
+            BigInteger[] conten = File.ReadAllLines(path, encoding).Select(p => BigInteger.Parse(p)).ToArray();
 
-            string result = Rabin.DecryptionWithVertifBigText(conten, OpenKey, out Signs);
+            string result = Rabin.DecryptModifSignBigText(conten, OpenKey, out Signs);
 
             return result;
         }
 
-        public void SaveContent(string content, string filepath, BigInteger p, BigInteger q)
+        public void SaveContent(string content, string filepath, BigInteger OpenKey, BigInteger SecretKey)
         {
-            SaveContent(content, filepath, _defaultEncoding, p, q);
+            SaveContent(content, filepath, _defaultEncoding, OpenKey, SecretKey);
         }
 
-        public void SaveContent(string content, string filepath, Encoding encoding, BigInteger p, BigInteger q)
+        public void SaveContent(string content, string filepath, Encoding encoding, BigInteger OpenKey, BigInteger SecretKey)
         {
-            Signature[] EncrypArr = Rabin.RabinSignatureBigtext(content, p, q);
+            BigInteger[] EncrypArr = Rabin.ModifCalcSignatureBigText(content, OpenKey, SecretKey);
 
 
-            string[] res = EncrypArr.Select(P => P.S + " " + P.I).ToArray();
+            string[] res = EncrypArr.Select(p => p + "").ToArray();
 
             File.WriteAllLines(filepath, res, encoding);
 
