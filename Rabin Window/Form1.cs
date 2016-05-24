@@ -242,7 +242,7 @@ namespace Rabin_Window
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            saveFileDialog.Filter = "Подпись Рабина|*.rabinmodifsignature";
+            saveFileDialog.Filter = "Модифицированная подпись Рабина|*.rabinmodifsignature";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
