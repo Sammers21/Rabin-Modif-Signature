@@ -29,7 +29,7 @@ namespace RabinTestConsole
 
                             Console.Clear();
 
-                            BigInteger p = 3004913, q = 20979403, n = p * q;
+                            BigInteger p = 3004913, q = 105023, n = p * q;
 
 
                             Console.WriteLine("В данном случае используются p={0}\tq={1}", p, q);

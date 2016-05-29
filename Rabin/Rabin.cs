@@ -28,6 +28,10 @@ namespace RabinLib
             int size = (int)CalcylateByteSize(OpenyKey);
 
             byte[] textUTF8 = Encoding.UTF8.GetBytes(text);
+            foreach(var v in textUTF8)
+            {
+                Console.Write(v+"\t");
+            }
 
             int cycleCount = (textUTF8.Length / size) + (textUTF8.Length % size == 0 ? 0 : 1);
             bool falgOK = cycleCount == (textUTF8.Length / size);
@@ -50,10 +54,11 @@ namespace RabinLib
                     result[i] += textUTF8[iteratoR++] * pow2;
                     pow2 *= 256;
                 }
-
+                Console.WriteLine("До удвоения "+result[i]);
                 result[i] = MX(result[i]);
+                Console.WriteLine("После удвоения " + result[i]);
                 result[i] = BigInteger.ModPow(result[i], 2, OpenyKey);
-
+                Console.WriteLine("Выход "+result[i]);
             }
 
             return result;
@@ -243,10 +248,15 @@ namespace RabinLib
 
             List<string> roots = new List<string>() {x.ToString(),minusX.ToString(),
          y.ToString(),minusY.ToString()};
+            Console.WriteLine("\n"+"Корни");
+            Console.WriteLine(roots[0]);
+            Console.WriteLine(roots[1]);
+            Console.WriteLine(roots[2]);
+            Console.WriteLine(roots[3]+"\n");
 
             List<string> Analized = Analyze(roots);
 
-
+            Console.WriteLine("Принятая "+Analized[0]);
 
             BigInteger message = BigInteger.Parse(Analized[0]);
 
