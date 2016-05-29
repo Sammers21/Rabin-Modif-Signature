@@ -514,7 +514,7 @@ namespace RabinLib
 
         #endregion
 
-        #region Methods for Big text Rabin Signature System
+        #region Methods for Big text Rabin Modif Signature System
 
         /// <summary>
         /// Считает размер блока байтов для данного ключа
@@ -734,39 +734,43 @@ namespace RabinLib
         /// <returns>байтовое представление извлеченного текста</returns>
         public static byte[] DecryptModifSignByteArr(BigInteger S, BigInteger OpenKey, out bool res)
         {
-            BigInteger u = BigInteger.ModPow(S, 2, OpenKey), U = BigInteger.ModPow(u, 1, 8);
+          
+                BigInteger u = BigInteger.ModPow(S, 2, OpenKey), U = BigInteger.ModPow(u, 1, 8);
 
 
-            BigInteger w;
+                BigInteger w;
 
-            if (U == 6)
-                w = u;
+                if (U == 6)
+                    w = u;
 
-            else if (U == 3)
-                w = 2 * u;
+                else if (U == 3)
+                    w = 2 * u;
 
-            else if (U == 7)
-                w = OpenKey - u;
+                else if (U == 7)
+                    w = OpenKey - u;
 
-            else if (U == 2)
-                w = 2 * (OpenKey - u);
+                else if (U == 2)
+                    w = 2 * (OpenKey - u);
 
-            else
-                throw new Exception("Ошибка в проверке подписи");
+                else
+                    throw new Exception("Ошибка в проверке подписи");
 
 
-            SignatyreVert Vetif = delegate (BigInteger si)
-            {
-                if ((si - 6) % 16 == 0)
-                    return true;
-                else return false;
-            };
+                SignatyreVert Vetif = delegate (BigInteger si)
+                {
+                    if ((si - 6) % 16 == 0)
+                        return true;
+                    else return false;
+                };
 
-            res = Vetif(w);
+                res = Vetif(w);
 
-            BigInteger m = (w - 6) / 16;
+                BigInteger m = (w - 6) / 16;
 
-            return ConvToBitFromBigInteger(m);
+                return ConvToBitFromBigInteger(m);
+            
+          
+        
         }
 
         #endregion

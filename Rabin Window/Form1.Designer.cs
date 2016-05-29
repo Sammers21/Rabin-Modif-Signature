@@ -260,7 +260,7 @@
             this.MinimumSize = new System.Drawing.Size(810, 360);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rabin Window";
+            this.Text = "Окно вычисления и проверки подписи";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

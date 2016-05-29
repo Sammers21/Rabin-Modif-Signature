@@ -173,7 +173,7 @@
             this.MinimumSize = new System.Drawing.Size(660, 360);
             this.Name = "OpenKeyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Окно шифровки информации";
+            this.Text = "Окно проверки подписи";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
